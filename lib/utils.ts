@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import {z} from "zod"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,14 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const authFormSchema = z.object({
+  email: z.string().email({
+    message: " Enter Valid Email"
+  }),
+  password: z.string()
+            .min(5,{message: "5 characters needed!"})
+            .regex( /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{5,}$/, {message: "Password must include at least one letter, one number, and one special character"})
+})
